@@ -1,0 +1,31 @@
+name: Build Executables
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install pkg
+      run: npm install -g pkg
+
+    - name: Install project dependencies
+      run: npm install
+
+    - name: Build executables
+      run: pkg index.js
+
+    - name: Upload executables
+      uses: actions/upload-artifact@v2
+      with:
+        name: executables
+        path: ./index-win.exe
