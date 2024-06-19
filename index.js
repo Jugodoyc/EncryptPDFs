@@ -10,19 +10,17 @@ const rl = createInterface({
   output: process.stdout,
 })
 
-const question = rl.question
-
 const getFolder = async() => {
   const folders = fs.readdirSync(`${process.cwd()}`).filter(file => fs.lstatSync(file).isDirectory())
   if (!folders) {
     console.log('No se encontro una carpeta con archivos en esta carpeta')
-    await question('Presiona enter para salir', () => rl.close())
+    await rl.question('Presiona enter para salir', () => rl.close())
     process.exit()
   }
   clearConsole()
   console.log(`Carpetas: ${folders}`)
   folders.forEach((folder, index) => console.log(`${index+1}. ${folder}`))
-  const folderIndex = await question('Seleccione la carpeta a utilizar: ')
+  const folderIndex = await rl.question('Seleccione la carpeta a utilizar: ')
   clearConsole()
   return folders[folderIndex-1]
 }
@@ -35,7 +33,7 @@ const main = async() => {
   const files = fs.readdirSync(`${process.cwd()}/${folder}`).filter(file => file.endsWith('.pdf'))
   if (!files) {
     console.log('No se encontraron pdfs en esta carpeta')
-    await question('Presiona enter para salir', () => rl.close())
+    await rl.question('Presiona enter para salir', () => rl.close())
     process.exit()
   }
   const filesMap = files.reduce((acc, file) => {
@@ -50,7 +48,7 @@ const main = async() => {
     fs.unlinkSync(`${path.resolve(process.cwd())}/${filesMap[consecutive]}`)
   })
 
-  await question('Presiona enter para salir ', () => rl.close())
+  await rl.question('Presiona enter para salir ', () => rl.close())
   process.exit()
 }
 
