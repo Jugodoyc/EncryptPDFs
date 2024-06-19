@@ -1,7 +1,8 @@
-const fs = require('node:fs')
+const fs = require('fs')
 const qpdf = require('node-qpdf2')
-const { createInterface } = require('node:readline/promises')
-const path = require('node:path')
+const { createInterface } = require('readline')
+const path = require('path')
+const { promisify } = require('util')
 
 const clearConsole = () => console.clear() 
 
@@ -10,17 +11,19 @@ const rl = createInterface({
   output: process.stdout,
 })
 
+const question = promisify(rl.question).bind(rl)
+
 const getFolder = async() => {
   const folders = fs.readdirSync(`${process.cwd()}`).filter(file => fs.lstatSync(file).isDirectory())
   if (!folders) {
     console.log('No se encontro una carpeta con archivos en esta carpeta')
-    await rl.question('Presiona enter para salir', () => rl.close())
+    await question('Presiona enter para salir', () => rl.close())
     process.exit()
   }
   clearConsole()
   console.log(`Carpetas: ${folders}`)
   folders.forEach((folder, index) => console.log(`${index+1}. ${folder}`))
-  const folderIndex = await rl.question('Seleccione la carpeta a utilizar: ')
+  const folderIndex = await question('Seleccione la carpeta a utilizar: ')
   clearConsole()
   return folders[folderIndex-1]
 }
@@ -33,7 +36,7 @@ const main = async() => {
   const files = fs.readdirSync(`${process.cwd()}/${folder}`).filter(file => file.endsWith('.pdf'))
   if (!files) {
     console.log('No se encontraron pdfs en esta carpeta')
-    await rl.question('Presiona enter para salir', () => rl.close())
+    await question('Presiona enter para salir', () => rl.close())
     process.exit()
   }
   const filesMap = files.reduce((acc, file) => {
@@ -43,11 +46,12 @@ const main = async() => {
   }, {})
   clearConsole()
   consecutiveAndCedula.forEach(async([consecutive, cedula]) => {
-    await qpdf.encrypt(`${path.resolve(process.cwd())}/${filesMap[consecutive]}`, {keyLength: 256, cedula: cedula.slice(-4) }, `${path.resolve(process.cwd())}/${cedula}.pdf`)
-    await fs.unlinkSync(`${path.resolve(process.cwd())}/${filesMap[consecutive]}`)
+    console.log(`${path.resolve(process.cwd())}/${filesMap[consecutive]}`)
+    await qpdf.encrypt(path.win32.resolve(process.cwd()+'/'+filesMap[consecutive]), {keyLength: 256, cedula: cedula.slice(-4) }, path.win32.resolve(process.cwd()+`/${cedula}.pdf`))
+    fs.unlinkSync(`${path.resolve(process.cwd())}/${filesMap[consecutive]}`)
   })
 
-  await rl.question('Presiona enter para salir ', () => rl.close())
+  await question('Presiona enter para salir ', () => rl.close())
   process.exit()
 }
 
