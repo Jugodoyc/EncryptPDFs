@@ -57,11 +57,14 @@ const main = async() => {
 }
 
 const init = async() => {
+  console.log('Bienvenido al programa de encriptación de PDFs')
+  await rl.question('Presiona enter para salir', () => rl.close())
   try {
     main()
   } catch (error) {
     console.log(error.message)
     await rl.question('Presiona enter para salir', () => rl.close())
+    process.exit()
   }
 }
 
