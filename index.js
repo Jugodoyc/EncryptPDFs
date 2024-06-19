@@ -42,10 +42,13 @@ const main = async() => {
     return acc
   }, {})
   clearConsole()
+  if(!fs.existsSync(`${process.cwd()}/${folder}/salida`)) {
+    fs.mkdirSync(`${process.cwd()}/${folder}/salida`)
+  }
   for(let i = 0; i < consecutiveAndCedula.length; i++) {
     const [consecutive, cedula] = consecutiveAndCedula[i]
     const muestraPath = path.win32.resolve(`${process.cwd()}/${folder}/${filesMap[consecutive]}`)
-    const pdfPath = path.win32.resolve(process.cwd()+`/${folder}/${cedula}.pdf`)
+    const pdfPath = path.win32.resolve(process.cwd()+`/${folder}/salida/${cedula}.pdf`)
     console.log(`Procesando ${muestraPath} - ${pdfPath}`)
     await qpdf.encrypt(muestraPath, {keyLength: 256, password: cedula.slice(-4) }, pdfPath)
   }
