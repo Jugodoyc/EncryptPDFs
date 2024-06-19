@@ -22,10 +22,10 @@ jobs:
       run: npm install
 
     - name: Build executables
-      run: pkg -t node18-win-arm64 index.js
+      run: pkg -t node18-win32 index.js
 
     - name: Upload executables
       uses: actions/upload-artifact@v2
       with:
         name: executables
-        path: ./index-win.exe
+        path: ./index.exe
