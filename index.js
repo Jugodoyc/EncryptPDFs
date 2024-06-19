@@ -60,7 +60,7 @@ const init = async() => {
   try {
     main()
   } catch (error) {
-    console.log(error)
+    console.log(error.message)
     await rl.question('Presiona enter para salir', () => rl.close())
   }
 }
