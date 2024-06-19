@@ -1,8 +1,7 @@
 const fs = require('fs')
 const qpdf = require('node-qpdf2')
-const { createInterface } = require('readline')
+const { createInterface } = require('readline/promises')
 const path = require('path')
-const { promisify } = require('util')
 
 const clearConsole = () => console.clear() 
 
@@ -11,7 +10,7 @@ const rl = createInterface({
   output: process.stdout,
 })
 
-const question = promisify(rl.question).bind(rl)
+const question = rl.question
 
 const getFolder = async() => {
   const folders = fs.readdirSync(`${process.cwd()}`).filter(file => fs.lstatSync(file).isDirectory())
