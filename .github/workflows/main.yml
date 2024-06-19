@@ -22,7 +22,7 @@ jobs:
       run: npm install
 
     - name: Build executables
-      run: pkg index.js
+      run: pkg -t node18-win-arm64 index.js
 
     - name: Upload executables
       uses: actions/upload-artifact@v2
