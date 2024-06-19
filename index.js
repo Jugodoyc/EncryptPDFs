@@ -5,14 +5,14 @@ const path = require('path')
 
 // const clearConsole = () => console.clear()
 
-// const rl = readline.createInterface({
-//   input: process.stdin,
-//   output: process.stdout
-// })
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
 
-// const askQuestion = (query) => {
-//   return new Promise(resolve => rl.question(query, resolve))
-// }
+const askQuestion = (query) => {
+  return new Promise(resolve => rl.question(query, resolve))
+}
 
 // const getFolder = async() => {
 //   const folders = fs.readdirSync(`${process.cwd()}`).filter(file => fs.lstatSync(file).isDirectory())
@@ -72,8 +72,8 @@ const init = async() => {
     console.log(error.message)
     await askQuestion('Presiona enter para salir')
     rl.close()
-    process.exit()
   }
+  process.exit()
 }
 
 init()
