@@ -51,7 +51,7 @@ const main = async() => {
   if (!fs.existsSync(`${process.cwd()}/${folder}/salida`)) {
     fs.mkdirSync(`${process.cwd()}/${folder}/salida`)
   }
-  for (let i = 0 i < consecutiveAndCedula.length i++) {
+  for (let i = 0; i < consecutiveAndCedula.length; i++) {
     const [consecutive, cedula] = consecutiveAndCedula[i]
     const muestraPath = path.resolve(`${process.cwd()}/${folder}/${filesMap[consecutive]}`)
     const pdfPath = path.resolve(`${process.cwd()}/${folder}/salida/${cedula}.pdf`)
