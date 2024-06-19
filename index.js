@@ -42,14 +42,16 @@ const main = async() => {
     return acc
   }, {})
   clearConsole()
-  consecutiveAndCedula.forEach(async([consecutive, cedula]) => {
-    console.log(`${path.resolve(process.cwd())}/${filesMap[consecutive]}`)
-    await qpdf.encrypt(path.win32.resolve(process.cwd()+'/'+filesMap[consecutive]), {keyLength: 256, cedula: cedula.slice(-4) }, path.win32.resolve(process.cwd()+`/${cedula}.pdf`))
-    fs.unlinkSync(`${path.resolve(process.cwd())}/${filesMap[consecutive]}`)
-  })
-
-  await rl.question('Presiona enter para salir ', () => rl.close())
+  for(let i = 0; i < consecutiveAndCedula.length; i++) {
+    const [consecutive, cedula] = consecutiveAndCedula[i]
+    const muestraPath = path.win32.resolve(`${process.cwd()}/${folder}/${filesMap[consecutive]}`)
+    const pdfPath = path.win32.resolve(process.cwd()+`/${folder}/${cedula}.pdf`)
+    console.log(`Procesando ${muestraPath} - ${pdfPath}`)
+    await qpdf.encrypt(muestraPath, {keyLength: 256, password: cedula.slice(-4) }, pdfPath)
+  }
+  await rl.question('Proceso Completado Presiona enter para salir ', () => rl.close())
   process.exit()
 }
+
 
 main()
