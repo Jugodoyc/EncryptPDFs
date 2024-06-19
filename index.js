@@ -56,5 +56,13 @@ const main = async() => {
   process.exit()
 }
 
+const init = async() => {
+  try {
+    main()
+  } catch (error) {
+    console.log(error)
+    await rl.question('Presiona enter para salir', () => rl.close())
+  }
+}
 
-main()
+init()
